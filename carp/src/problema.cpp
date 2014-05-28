@@ -112,37 +112,11 @@ void tvehiculo :: set_visitado(int i, int valor) {
    visitados[i] = valor;
 };
 
-void tvehiculo :: eliminar_ultimo_visitando() {
-   if (!visitando.empty())
-   visitando.pop_back();
-};
-
-mdata tvehiculo :: get_ultimo_visitando() {
-   if (visitando.size() >= 1)
-      return visitando[visitando.size()-1];
-   mdata dummy;
-   dummy.set_valor(-1);
-   return dummy;
-};
-
-void tvehiculo :: insertar_visitando(mdata vis) {
-   visitando.push_back(vis);
-};
-
-void tvehiculo :: imprimir_visitandos() {
-	  cout << "__>Numero de visitandos: " << visitando.size() << "- Vehiculo: " << id << endl;
-    for (int i = 0; i < visitando.size(); i++) {
-       cout << visitando[i].get_indx() << ", ";
-    }
-    cout << endl;
-};
-
 ruta_parcial :: ruta_parcial (mdistancia &mat,datos * dat) {
    mraw = mat;
    mord = mat;    //nn
    //mord.ordenar_matriz();
    data = dat;
-   siguiente = 0;
    insertar_visitado(0);
 }
 
@@ -150,7 +124,6 @@ ruta_parcial :: ruta_parcial (string nombre) {
    //mdistancia aux(nombre.c_str());
   // mraw = aux;
    //mord = aux;
-	siguiente = 0;
    insertar_visitado(0);
 }
 
@@ -159,7 +132,6 @@ ruta_parcial :: ruta_parcial (const ruta_parcial &r) {
 	mord = r.mord;
 	visitados = r.visitados;
 	data = r.data;
-	siguiente = r.siguiente;
 
 };
 
@@ -222,38 +194,30 @@ mdata ruta_parcial :: candidatos (int i) { // dado un punto buscamos los 3 mas c
 };
 bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
    //cout << "fin de visitas? " << fin_visitas() << endl;
-   //vector<mdata> visitando;
+   vector<mdata> visitando;
    if (!fin_visitas()) {
 	   int cont = 0;
-	   //int siguiente = 0;
+	   int siguiente = 0;
 	   //float coste = 0.0;
-	   //mdata ret;
+	   mdata ret;
 	   //int demanda = 0;
-	   //cout << "Carga antes de entrar: " << v.getcarga_actual() << endl;
+	   cout << "Carga antes de entrar: " << v.getcarga_actual() << endl;
 	   //while (cont < mraw.getsize() && v.getcarga_actual()+ mraw.get_demandaij(ret.get_indx(), siguiente) <= v.getcarga_max() && !fin_visitas()) {
-	   //if (cont < mraw.getsize()&& !fin_visitas()) {
-	   if (!fin_visitas()) {
+	   while (cont < mraw.getsize()&& !fin_visitas()) {
 	   //while (cont < mraw.getsize() && v.getcarga_actual()+ listado[siguiente].  <= v.getcarga_max() && !fin_visitas()) {
 		  ret = candidatos(siguiente);
 		  cout << "----------->siguiente: " << ret.get_indx() << endl;
-		  if (ret.get_indx() == -1) {
-			  cout << "No hay candidato valido" << endl;
-		  }
 		  //demanda = ret.getdemanda();
 		  //cout << "Demanda: " << demanda << endl;
 		  //cin.get();
-		  ///visitando.push_back(ret);
-		  //v.insertar_visitando(ret);
-		  /*
+		  visitando.push_back(ret);
 		  cout << "tamanio visitando: " << visitando.size() << endl;
           for (int i = 0; i < visitando.size(); i++) {
              cout << visitando[i].get_indx() << ", ";
           }
           cout << endl;
-          */
-		  v.imprimir_visitandos();
           if (ret.alcanzable()) {
-        	 v.insertar_visitando(ret);
+
 		     v.sumar_coste(ret.get_valor());
 		  //cout << "ret: " << ret.getdistancia() << ", " << "getij: " << mraw.get_distancia(ret.getid(), siguiente) << " i: " << siguiente << ", j: " << ret.getid() << endl;
 		  //cin.get();
@@ -264,23 +228,20 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
           }
           else{
              cout << "Punto no alcanzable " << ret.get_indx() << endl;
-             ///visitando.pop_back();
-             //v.eliminar_ultimo_visitando();
-             ///ret = (*visitando.end());
-             //ret = v.get_ultimo_visitando();
-             //cout << "Punto: " << ret.get_indx() << endl;
-             ///visitando.pop_back();
-             v.eliminar_ultimo_visitando();
-             ///ret = visitando[visitando.size()-1];
-             ret = v.get_ultimo_visitando();
+             visitando.pop_back();
+             ret = (*visitando.end());
+             cout << "Punto: " << ret.get_indx() << endl;
+             visitando.pop_back();
+             ret = visitando[visitando.size()-1];
              cout << "Nuevo punto: " << ret.get_indx()  << endl;
              siguiente = ret.get_indx();
+             v.insertar(siguiente);
              //cout << "tamanio visitando: " << visitando.size() << endl;
 
 
           }
           cout << "Puntos ya visitados: " << visitados.size() << endl;
-          std :: sort (visitados.begin(),visitados.end());
+          //std :: sort (visitados.begin(),visitados.end());
           for (int i = 0; i < visitados.size(); i++) {
         	  cout << visitados[i] << ". ";
           }
@@ -289,11 +250,11 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
 		  //v.sumar_carga(demanda);
 	   }
 	   //cout << "vehiculo lleno" << endl;
-	   //v.sumar_coste(getdistanciaij(ret.get_indx(),0)); //añadimos el coste de ir desde el ultimo punto hasta el origen
+	  /// v.sumar_coste(getdistanciaij(ret.get_indx(),0)); //añadimos el coste de ir desde el ultimo punto hasta el origen
 	   //cout << "getij: " << mraw.get_distancia(ret.getid(), 0) << ", vs: " << getdistanciaij(ret.getid(),0) << " i: 0, j: "  << ret.getid() <<  endl;
 	   //cout << "carga hasta el momento: " << v.get_coste() << endl;
 	   //cin.get();
-	   //v.insertar(0); //añadimos al recorrido del vehiculo la vuelta al origen
+	   ////v.insertar(0); //añadimos al recorrido del vehiculo la vuelta al origen
 	   //v.impr_recorrido();
 	   //cin.get();
 	   //cout << "distancia del ultimo punto al origen: " << getdistanciaij(ret.getid(),0) << endl
@@ -376,7 +337,6 @@ float ruta_parcial :: getdistanciaij (int i, int j) {
 vector<int> ruta_parcial :: get_visitados() {
    return visitados;
 };
-
 
 
 

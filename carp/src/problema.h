@@ -23,7 +23,6 @@ class tvehiculo {
    //list <int> visitados;
    vector <int> visitados;
    bool usado;
-   vector <mdata> visitando;
 public:
    tvehiculo();
    ~tvehiculo();
@@ -46,10 +45,6 @@ public:
    void set_visitado(int i, int valor);
    void set_visitados(vector <int> &vt);
    int visitados_size(); //devuelve el numero de puntos visitados;
-   void eliminar_ultimo_visitando();
-   mdata get_ultimo_visitando();
-   void insertar_visitando(mdata vis);
-   void imprimir_visitandos();
 };
 
 
@@ -59,11 +54,7 @@ private:
    mdistancia mraw; //matriz de distancias sin modificar
    mdistancia mord; //matriz de distancias ordenada
    vector<int> visitados;
-   vector<mdata> visitando;
    datos * data;
-   int siguiente;
-   //float coste = 0.0;
-   mdata ret;
 public:
    ruta_parcial (const ruta_parcial &r);
    ruta_parcial (mdistancia &mat,datos * dat); //constructor con una matriz ya inicializada desde fuera
