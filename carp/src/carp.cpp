@@ -24,6 +24,6 @@ int main() {
 	ruth.buscar(vehicle);
 	vehicle.impr_recorrido();
 //	mdata dati = ruth.candidatos(1);
-//	cout << "candidato: " << dati.get_indx() << ", y es alcanzable: " << dati.alcanzable() << endl;
+	cout << "candidato: " << dati.get_indx() << ", y es alcanzable: " << dati.alcanzable() << endl;
 	return 0;
 }
