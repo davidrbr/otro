@@ -10,22 +10,24 @@ tvehiculo :: tvehiculo () {
    ut = 0;
    ua = 0;
    coste = 0.0;
-   visitados.push_back(0);
+   //visitados.push_back(0);
    usado = false;
+   origen = 0;
 };
 
 tvehiculo :: ~tvehiculo() {
    //visitados.clear();
 };
 
-tvehiculo :: tvehiculo (int i, int uut) {
+tvehiculo :: tvehiculo (int i, int uut, int org) {
    //coste = 0;
    id = i;
    ut = uut;
    ua = 0;
-   visitados.push_back(0);
    usado = false;
    coste = 0.0;
+   origen = org;
+   visitados.push_back(origen);
 };
 
 void tvehiculo :: insertar (int i) {
@@ -34,10 +36,17 @@ void tvehiculo :: insertar (int i) {
 };
 
 void tvehiculo :: impr_recorrido () {
+   ofstream file;
+   file.open("vehiculo.txt");
    cout << "Recorrido del vehiculo "<< id << ": " << endl;
-   for (vector<int> :: iterator it = visitados.begin(); it != visitados.end(); it++)
-      cout << "-" << (*it);
+   for (vector<int> :: iterator it = visitados.begin(); it != visitados.end(); it++) {
+      cout << "," << (*it);
+      file << "," << (*it);
+   }
    cout << endl << endl;
+   file << endl << endl;
+   file.close();
+
 };
 
 string tvehiculo ::  get_recorrido() {
@@ -117,14 +126,14 @@ ruta_parcial :: ruta_parcial (mdistancia &mat,datos * dat) {
    mord = mat;    //nn
    //mord.ordenar_matriz();
    data = dat;
-   insertar_visitado(0);
+   //insertar_visitado(origen);
 }
 
 ruta_parcial :: ruta_parcial (string nombre) {
    //mdistancia aux(nombre.c_str());
   // mraw = aux;
    //mord = aux;
-   insertar_visitado(0);
+   //insertar_visitado(origen);
 }
 
 ruta_parcial :: ruta_parcial (const ruta_parcial &r) {
@@ -132,6 +141,7 @@ ruta_parcial :: ruta_parcial (const ruta_parcial &r) {
 	mord = r.mord;
 	visitados = r.visitados;
 	data = r.data;
+	//origen = r.origen;
 
 };
 
@@ -197,7 +207,10 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
    vector<mdata> visitando;
    if (!fin_visitas()) {
 	   int cont = 0;
-	   int siguiente = 0;
+	   int siguiente = v.getOrigen();
+	   //cout << "origen: " <<
+	   insertar_visitado(siguiente);
+	   //v.insertar(siguiente);
 	   //float coste = 0.0;
 	   mdata ret;
 	   //int demanda = 0;

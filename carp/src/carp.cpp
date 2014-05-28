@@ -15,10 +15,10 @@ int main() {
 	dat->marcar_adyacentes();
 	//dat.mostrar_matriz();
 	mdistancia mat = dat->get_matriz();
-	mat.mostrar_matriz();
-	tvehiculo vehicle(1,200);
+	//mat.mostrar_matriz();
+	tvehiculo vehicle(1,200,3);
 
-	dat->mostrarlistado();
+	//dat->mostrarlistado();
 	ruta_parcial ruth(mat, dat);
 	//mat.mostrar_demandas();
 	ruth.buscar(vehicle);

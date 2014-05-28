@@ -116,6 +116,8 @@ private:
    int capvehiculos;
    vector <punto> listado;
    vector <vector <mdata> > matriz;
+   int maxX;
+   int minX;
 public:
    datos();
    datos (string nombre);

@@ -23,10 +23,11 @@ class tvehiculo {
    //list <int> visitados;
    vector <int> visitados;
    bool usado;
+   int origen; //punto desde donde comienza a buscar rutas
 public:
    tvehiculo();
    ~tvehiculo();
-   tvehiculo(int i, int uut);
+   tvehiculo(int i, int uut, int org);
    void insertar (int i);
    void impr_recorrido ();
    int getid ();
@@ -45,6 +46,14 @@ public:
    void set_visitado(int i, int valor);
    void set_visitados(vector <int> &vt);
    int visitados_size(); //devuelve el numero de puntos visitados;
+
+	int getOrigen() const {
+		return origen;
+	}
+
+	void setOrigen(int origen) {
+		this->origen = origen;
+	}
 };
 
 
@@ -55,6 +64,7 @@ private:
    mdistancia mord; //matriz de distancias ordenada
    vector<int> visitados;
    datos * data;
+   //int origen;
 public:
    ruta_parcial (const ruta_parcial &r);
    ruta_parcial (mdistancia &mat,datos * dat); //constructor con una matriz ya inicializada desde fuera

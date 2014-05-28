@@ -45,12 +45,16 @@ datos::datos() {
    nvehiculos = 0;
    nclientes = 0;
    capvehiculos = 0;
+   maxX = 0;
+   minX = 0;
 }
 
 datos :: datos(string nombre) {
    nvehiculos = 0;
    nclientes = 0;
    capvehiculos = 0;
+   maxX = 0;
+   minX = 0;
    ifstream file (nombre.c_str());
    string aux;
    for (int i = 0; i < 4; i++) //saltamos las cuatro primeras palabras
