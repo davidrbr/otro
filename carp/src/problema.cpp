@@ -221,7 +221,7 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
 	   //cin.get();
 	   visitando.push_back(algo);
 	   //while (cont < mraw.getsize() && v.getcarga_actual()+ mraw.get_demandaij(ret.get_indx(), siguiente) <= v.getcarga_max() && !fin_visitas()) {
-	   while (cont < mraw.getsize()&& !fin_visitas()) {
+	   while (cont < mraw.getsize()&& !fin_visitas() && ret.get_indx() != 55 && ret.get_indx() != 54 && ret.get_indx() != 53 && ret.get_indx() != 52 && ret.get_indx() != 51) {
 	   //while (cont < mraw.getsize() && v.getcarga_actual()+ listado[siguiente].  <= v.getcarga_max() && !fin_visitas()) {
 		  ret = candidatos(siguiente);
 		  cout << "----------->siguiente: " << ret.get_indx() << endl;
@@ -256,10 +256,17 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
              //if (visitando.size() >= 1) {
              if (!visitando.empty())
                 visitando.pop_back();
+             cout << "visitando sise: " << visitando.size() << endl;
+             if (visitando.size() > 0) {
                 ret = visitando[visitando.size()-1];
-             cout << "Nuevo punto: " << ret.get_indx()  << endl;
-             siguiente = ret.get_indx();
-             v.insertar(siguiente);
+                cout << "Nuevo punto: " << ret.get_indx()  << endl;
+                siguiente = ret.get_indx();
+                v.insertar(siguiente);
+             }
+           if (visitando.empty() && ret.get_indx() == -1) {
+        	  cout << "BREIK" << endl;
+              break;
+           }
              //}
              //cout << "tamanio visitando: " << visitando.size() << endl;
              //cin.get();
