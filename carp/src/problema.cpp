@@ -163,8 +163,6 @@ vector<mdata> ruta_parcial :: ordenar_fila (int i) {
    return candidatos;
 };
 
-
-
 mdata ruta_parcial :: candidatos (int i) { // dado un punto buscamos los 3 mas cercanos que no hayan sido visitados ya, para poder seleccionar uno de forma aleatoria
    vector <mdata> candidatos = ordenar_fila(i);
    int indice = 0;
@@ -217,17 +215,21 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
 	   mdata ret;
 	   //int demanda = 0;
 	   cout << "Carga antes de entrar: " << v.getcarga_actual() << endl;
-	   bool fin = false;
+	   mdata algo = mraw.get(v.getOrigen(),v.getOrigen());
+	   cout << "algo: " << algo.get_indx() << endl;
+//	   /visitando.push_back(v.getOrigen());
+	   //cin.get();
+	   visitando.push_back(algo);
 	   //while (cont < mraw.getsize() && v.getcarga_actual()+ mraw.get_demandaij(ret.get_indx(), siguiente) <= v.getcarga_max() && !fin_visitas()) {
-	   while (cont < mraw.getsize()&& !fin_visitas() && ret.get_indx() != 55 && ret.get_indx() != 54&& ret.get_indx() != 53 && ret.get_indx() != 52 && ret.get_indx() != 51 && fin == false) {
+	   while (cont < mraw.getsize()&& !fin_visitas()) {
 	   //while (cont < mraw.getsize() && v.getcarga_actual()+ listado[siguiente].  <= v.getcarga_max() && !fin_visitas()) {
 		  ret = candidatos(siguiente);
 		  cout << "----------->siguiente: " << ret.get_indx() << endl;
 		  //demanda = ret.getdemanda();
 		  //cout << "Demanda: " << demanda << endl;
 		  //cin.get();
-		  //if ()
-		  visitando.push_back(ret);
+		  if (ret.get_indx() != -1)
+		     visitando.push_back(ret);
 		  cout << "tamanio visitando: " << visitando.size() << endl;
           for (int i = 0; i < visitando.size(); i++) {
              cout << visitando[i].get_indx() << ", ";
@@ -243,30 +245,24 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
 		     v.insertar(siguiente);
 		     cont++;
           }
-     	  if (visitando.empty() && ret.get_indx() == -1 )
-             fin = true;
-          else {
-              for (int i = 0; i < visitados.size(); i++) {
-            	  cout << visitando[i].get_indx() << "_ ";
-              }
-              cout << endl;
-        	 cout << "visitando.empty() " << visitando.empty() << endl;
+          else{
              cout << "Punto no alcanzable " << ret.get_indx() << endl;
+             //if (!visitando.empty())
+             //   visitando.pop_back();
+             //ret = (*visitando.end());
+             //cout << "Punto: " << ret.get_indx() << endl;
+             //if (!visitando.empty())
+             //   visitando.pop_back();
+             //if (visitando.size() >= 1) {
              if (!visitando.empty())
                 visitando.pop_back();
-             if (!visitando.empty())
-                ret = (*visitando.end());
-             cout << "Punto: " << ret.get_indx() << endl;
-             if (!visitando.empty())
-                visitando.pop_back();
-             cout << "visitando: " << visitando.size() << endl;
-             if (visitando.size() >= 1) {
                 ret = visitando[visitando.size()-1];
-                cout << "Nuevo punto: " << ret.get_indx()  << endl;
-                siguiente = ret.get_indx();
-                v.insertar(siguiente);
-             }
+             cout << "Nuevo punto: " << ret.get_indx()  << endl;
+             siguiente = ret.get_indx();
+             v.insertar(siguiente);
+             //}
              //cout << "tamanio visitando: " << visitando.size() << endl;
+             //cin.get();
 
 
           }
