@@ -300,6 +300,34 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
    return false;
 };
 
+vector<int> ruta_parcial :: get_no_visitados() {
+   vector <int> aux = get_visitados();
+   vector <int> ret;
+   std :: sort (aux.begin(), aux.end());
+   for (int i = 0; i < mraw.getsize(); i++) {
+      bool found = false;
+	  for (int j = 0; j < aux.size(); j++) {
+         if (i == aux[j])
+            found = true;
+      }
+	  if (!found)
+	     ret.push_back(i);
+   }
+   /*
+      //ret.push_back(i);
+   cin.get();
+   for (int i = 0; i < mraw.getsize(); i++) {
+	   for (int j = 0; j < aux.size(); j++) {
+          if (ret[i] == aux[j]){
+             ret.erase(ret.begin()+i);
+             break;
+          }
+	   }
+   }
+   */
+   return ret;
+}
+
 /*
 bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
    //cout << "fin de visitas? " << fin_visitas() << endl;

@@ -22,6 +22,7 @@ class tvehiculo {
    float coste; //coste de la ruta
    //list <int> visitados;
    vector <int> visitados;
+   //vector <int> no_visitados;
    bool usado;
    int origen; //punto desde donde comienza a buscar rutas
 public:
@@ -63,6 +64,7 @@ private:
    mdistancia mraw; //matriz de distancias sin modificar
    mdistancia mord; //matriz de distancias ordenada
    vector<int> visitados;
+   //vector<int> no_visitados;
    datos * data;
    //int origen;
 public:
@@ -77,6 +79,7 @@ public:
    bool fin_visitas ();
    float getdistanciaij (int i, int j);
    vector <int> get_visitados();
+   vector<int> get_no_visitados();
 };
 
 

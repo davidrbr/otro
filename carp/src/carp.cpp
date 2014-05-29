@@ -28,6 +28,11 @@ int main() {
 	vehicle.impr_recorrido();
 	vehicle2.impr_recorrido();
 	vehicle3.impr_recorrido();
+	vector<int> vis = ruth.get_no_visitados();
+	cout << "puntos no visitados: " << vis.size() << endl;
+	for (int i = 0; i < vis.size(); i++)
+       cout << vis[i] << ", ";
+	cout << endl;
 //	mdata dati = ruth.candidatos(1);
 	//cout << "candidato: " << dati.get_indx() << ", y es alcanzable: " << dati.alcanzable() << endl;
 	return 0;
