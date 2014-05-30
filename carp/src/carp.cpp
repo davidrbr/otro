@@ -33,6 +33,11 @@ int main() {
 	for (int i = 0; i < vis.size(); i++)
        cout << vis[i] << ", ";
 	cout << endl;
+
+	vector<tvehiculo> dum;
+	//ruth.completar_rutas(dum);
+	vehicle.insertar_npos(30,57);
+	vehicle.impr_recorrido();
 //	mdata dati = ruth.candidatos(1);
 	//cout << "candidato: " << dati.get_indx() << ", y es alcanzable: " << dati.alcanzable() << endl;
 	return 0;

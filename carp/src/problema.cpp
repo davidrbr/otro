@@ -121,6 +121,23 @@ void tvehiculo :: set_visitado(int i, int valor) {
    visitados[i] = valor;
 };
 
+bool tvehiculo :: insertar_npos(int i, int j) {
+   std::vector<int>::iterator it;
+   it = visitados.begin();
+   while (((*it) != i) && (it != visitados.end())) {
+      it++;
+   }
+   if (it == visitados.end()) {
+      visitados.push_back(j);
+      visitados.push_back(i);
+   }
+   else {
+      visitados.insert(it+1,j);
+      visitados.insert(it+2,i);
+   }
+   return true;
+};
+
 ruta_parcial :: ruta_parcial (mdistancia &mat,datos * dat) {
    mraw = mat;
    mord = mat;    //nn
@@ -300,33 +317,7 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
    return false;
 };
 
-vector<int> ruta_parcial :: get_no_visitados() {
-   vector <int> aux = get_visitados();
-   vector <int> ret;
-   std :: sort (aux.begin(), aux.end());
-   for (int i = 0; i < mraw.getsize(); i++) {
-      bool found = false;
-	  for (int j = 0; j < aux.size(); j++) {
-         if (i == aux[j])
-            found = true;
-      }
-	  if (!found)
-	     ret.push_back(i);
-   }
-   /*
-      //ret.push_back(i);
-   cin.get();
-   for (int i = 0; i < mraw.getsize(); i++) {
-	   for (int j = 0; j < aux.size(); j++) {
-          if (ret[i] == aux[j]){
-             ret.erase(ret.begin()+i);
-             break;
-          }
-	   }
-   }
-   */
-   return ret;
-}
+
 
 /*
 bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
@@ -399,5 +390,94 @@ vector<int> ruta_parcial :: get_visitados() {
    return visitados;
 };
 
+vector<int> ruta_parcial :: get_no_visitados() {
+   vector <int> aux = get_visitados();
+   vector <int> ret;
+   std :: sort (aux.begin(), aux.end());
+   for (int i = 0; i < mraw.getsize(); i++) {
+      bool found = false;
+	  for (int j = 0; j < aux.size(); j++) {
+         if (i == aux[j])
+            found = true;
+      }
+	  if (!found)
+	     ret.push_back(i);
+   }
+   /*
+      //ret.push_back(i);
+   cin.get();
+   for (int i = 0; i < mraw.getsize(); i++) {
+	   for (int j = 0; j < aux.size(); j++) {
+          if (ret[i] == aux[j]){
+             ret.erase(ret.begin()+i);
+             break;
+          }
+	   }
+   }
+   */
+   return ret;
+}
+
+void ruta_parcial :: completar_rutas(vector <tvehiculo> & vehiculos) {
+
+   vector <int> nov = get_no_visitados();
+   while (!fin_visitas()) {
+	  int i = 0;
+      while (i < nov.size()) {
+         mdata candidato = adyacente_cercano(nov[i]); // nov[i] es el punto para el cual se quiere buscar un candidato adyacente que si este visitado
+         if (candidato.get_indx() != -1)
+
+         i++;
+      }
+
+   }
+
+};
+/*
+vector<mdata> ruta_parcial :: ordenar_fila (int i) {
+   vector <mdata> candidatos;
+   int j = 0;
+   while (j < mraw.getsize() && !fin_visitas()) {
+      if ((!comprobar_visitado(mraw.get(i,j).get_indx()) && mraw.get(i,j).get_valor() != 0) && (mraw.get(i,j).alcanzable()))
+         candidatos.push_back(mraw.get(i,j));
+      j++;
+   }
+   std :: sort(candidatos.begin(), candidatos.end());
+   cout << "candidatos: " << endl;
+   for (unsigned int i = 0; i < candidatos.size();i++)
+      cout << candidatos[i].get_indx() << ", ";
+   cout << endl;
+   if (candidatos.empty())
+   cout << "NO HAY CANDIDATOS!!" << endl;
+   return candidatos;
+};
+
+*/
+mdata ruta_parcial :: adyacente_cercano(int i) {
+   vector <mdata> adyacentes;
+   mdata ret;
+   ret.set_valor(-1);
+   int j = 0;
+   while (j < mraw.getsize() && !fin_visitas()) {
+      if (comprobar_visitado(mraw.get(i,j).get_indx()) && (mraw.get(i,j).alcanzable())) {
+    	 cout << "habba: " << mraw.get(i,j).get_indx() << endl;
+         adyacentes.push_back(mraw.get(i,j));
+      }
+      j++;
+   }
+   cout << "Adyacentes: " << endl;
+   for (int j = 0; j < adyacentes.size(); j++) {
+      cout << adyacentes[j].get_indx() <<  ", ";
+   }
+   cout << endl;
+   if (adyacentes.size() > 0) {
+      std :: sort (adyacentes.begin(), adyacentes.end());
+      cout << "mejor candidato es : " << (*adyacentes.begin()).get_indx() << ", para el punto: " << i <<  endl;
+      cout << endl;
+      ret = (*adyacentes.begin());
+   }
+
+   return ret;
+}
 
 

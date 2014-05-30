@@ -55,6 +55,7 @@ public:
 	void setOrigen(int origen) {
 		this->origen = origen;
 	}
+	bool insertar_npos(int i, int j); // nos sirve para insertar los puntos para completar las rutas
 };
 
 
@@ -80,6 +81,8 @@ public:
    float getdistanciaij (int i, int j);
    vector <int> get_visitados();
    vector<int> get_no_visitados();
+   void completar_rutas(vector <tvehiculo> & vehiculos);
+   mdata adyacente_cercano(int i);
 };
 
 
