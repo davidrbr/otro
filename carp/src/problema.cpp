@@ -127,15 +127,38 @@ bool tvehiculo :: insertar_npos(int i, int j) {
    while (((*it) != i) && (it != visitados.end())) {
       it++;
    }
-   if (it == visitados.end()) {
-      visitados.push_back(j);
-      visitados.push_back(i);
-   }
-   else {
+   //if ((*it) == i) {
+   if (((*it) == i) && ((it+1) == visitados.end())) {
+	  cout << "it: " << (*it) << " , " << i << endl;
       visitados.insert(it+1,j);
-      visitados.insert(it+2,i);
+      cout << "2" << endl;
+      //visitados.insert(it+2,i);
+      visitados.push_back(i);
+      cout << "3" << endl;
+      cout << "POR" << endl;
+      //cin.get();
+      return true;
    }
-   return true;
+   else if ((*it) == i) {
+		  cout << "it: " << (*it) << " , " << i << endl;
+	      visitados.insert(it+1,j);
+	      cout << "2" << endl;
+	      visitados.insert(it+2,i);
+	      cout << "3" << endl;
+	      //cout << "POR" << endl;
+	      return true;
+
+   }
+   else if (((*it) == i) && (it == visitados.end())) {
+      //visitados.insert(it+1,j);
+      //visitados.insert(it+2,i);
+	  visitados.push_back(j);
+	  visitados.push_back(i);
+	  return true;
+   }
+   else
+      return false;
+   //return true;
 };
 
 ruta_parcial :: ruta_parcial (mdistancia &mat,datos * dat) {
@@ -391,16 +414,26 @@ vector<int> ruta_parcial :: get_visitados() {
 };
 
 vector<int> ruta_parcial :: get_no_visitados() {
-   vector <int> aux = get_visitados();
+	   //cout << "mraw.size: " << mraw.getsize() << endl;
+   //vector <int> aux = get_visitados();
+   //cout << "chivaton:" << endl;
+   //cout << "visitados. size: " << visitados.size() << endl;
    vector <int> ret;
-   std :: sort (aux.begin(), aux.end());
+  // cout << "chivatin" << endl;
+   //std :: sort (aux.begin(), aux.end());
    for (int i = 0; i < mraw.getsize(); i++) {
       bool found = false;
-	  for (int j = 0; j < aux.size(); j++) {
-         if (i == aux[j])
+      //cout << "indice: " << i << endl;
+	  for (int j = 0; j < visitados.size(); j++) {
+		 //cout << "j: " << j << endl;
+		 //cout <<  "i: "<< i <<", visitadosj: " << visitados[j] << endl;
+         if (i == visitados[j]) {
+        	//cout << "visitados[j]: " << visitados[j] << endl;
             found = true;
+            break;
+         }
       }
-	  if (!found)
+	  if (found == false)
 	     ret.push_back(i);
    }
    /*
@@ -418,20 +451,34 @@ vector<int> ruta_parcial :: get_no_visitados() {
    return ret;
 }
 
-void ruta_parcial :: completar_rutas(vector <tvehiculo> & vehiculos) {
 
-   vector <int> nov = get_no_visitados();
+void ruta_parcial :: completar_rutas(vector <tvehiculo> & vehiculos) {
+vector <int> nov;
+mdata candidato;
    while (!fin_visitas()) {
 	  int i = 0;
+	  cout << "chivato1" << endl;
+	  nov = get_no_visitados();
+	  cout << "chivato2" << endl;
+	  cout << "**tamanio no visitados: " << nov.size() << endl;
       while (i < nov.size()) {
-         mdata candidato = adyacente_cercano(nov[i]); // nov[i] es el punto para el cual se quiere buscar un candidato adyacente que si este visitado
-         if (candidato.get_indx() != -1)
-
+    	 cout << "chivato3" << endl;
+         candidato = adyacente_cercano(nov[i]); // nov[i] es el punto para el cual se quiere buscar un candidato adyacente que si este visitado
+   	  cout << "chivato4" << endl;
+         if (candidato.get_indx() != -1){
+        	cout << "candidato: " << candidato.get_indx() << endl;
+        	cout << "-Numero de visitados antes: " << visitados.size() << endl;
+            cout << "insertado en vehiculo: " << insertar_pvehiculos(vehiculos,candidato.get_indx(),nov[i]) << endl;
+      	  cout << "chivato5" << endl;
+        	cout << "-Numero de visitados despues: " << visitados.size() << endl;
+            break;
+         }
+   	  cout << "chivato6" << endl;
+         cout << "i completar rutas: " << i << endl;
          i++;
       }
-
+      cin.get();
    }
-
 };
 /*
 vector<mdata> ruta_parcial :: ordenar_fila (int i) {
@@ -480,4 +527,13 @@ mdata ruta_parcial :: adyacente_cercano(int i) {
    return ret;
 }
 
+int ruta_parcial :: insertar_pvehiculos (vector<tvehiculo> &v, int pvisitado, int pnuevo) {
+   for (int i = 0; i < v.size(); i++) {
+      if (v[i].insertar_npos(pvisitado,pnuevo)){
+         insertar_visitado(pnuevo);
+         return v[i].getid();
+      }
+   }
+   return -1;
+}
 

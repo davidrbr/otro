@@ -173,6 +173,8 @@ void datos :: marcar_adyacentes() {
 }
 
 
+
+
 mdistancia datos :: get_matriz() {
    return matriz;
 }

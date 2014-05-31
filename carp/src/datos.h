@@ -132,11 +132,11 @@ public:
 
 	const vector<punto>& getListado() const {
 		return listado;
-	}
+	};
 
 	void setListado(const vector<punto>& listado) {
 		this->listado = listado;
-	}
+	};
 };
 
 

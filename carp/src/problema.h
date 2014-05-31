@@ -83,6 +83,7 @@ public:
    vector<int> get_no_visitados();
    void completar_rutas(vector <tvehiculo> & vehiculos);
    mdata adyacente_cercano(int i);
+   int insertar_pvehiculos (vector<tvehiculo> &v, int pvisitado, int pnuevo);
 };
 
 
