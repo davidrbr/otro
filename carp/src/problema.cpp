@@ -124,9 +124,12 @@ void tvehiculo :: set_visitado(int i, int valor) {
 bool tvehiculo :: insertar_npos(int i, int j) {
    vector<int> copia;
    bool find = false;
-   for (int k = 0; k < visitados.size(); k++)
+   for (int k = 0; k < visitados.size(); k++) {
       if (visitados[k] == i)
          find = true;
+      if (visitados[k] == j) //si ya existe no lo va a insertar
+         return false;
+   }
    if (find == true) { //si se encuentra el punto:
       int k = 0;
       while (k < visitados.size()) {
@@ -470,34 +473,42 @@ vector<int> ruta_parcial :: get_no_visitados() {
 
 void ruta_parcial :: completar_rutas(vector <tvehiculo> & vehiculos) {
 mdata candidato;
-   while (!fin_visitas()) {
-	  int i = 0;
-	  cout << "chivato1" << endl;
-	  cout << "chivato2" << endl;
+
+	  //cout << "chivato1" << endl;
+	  //cout << "chivato2" << endl;
 	  //cout << "**tamanio no visitados: " << nov.size() << endl;
-      cout << "chivato3" << endl;
+      //cout << "chivato3" << endl;
       list<int> :: iterator it = no_visitados.begin();
-      while (it != no_visitados.end()) {
-    	 cout << "punto a visitar: " << (*it) << endl;
+      while (!fin_visitas()) {
+         it = no_visitados.begin();
+      while (it != no_visitados.end() && !fin_visitas()) {
+    	 cout << "punto a visitar: " << (*it) << "size: " << no_visitados.size()  << endl;
          candidato = adyacente_cercano((*it)); // nov[i] es el punto para el cual se quiere buscar un candidato adyacente que si este visitado;
          if (candidato.get_indx() != -1){
         	cout << "candidato: " << candidato.get_indx() << endl;
         	cout << "-Numero de visitados antes: " << visitados.size() << endl;
             cout << "insertado en vehiculo: " << insertar_pvehiculos(vehiculos,candidato.get_indx(),(*it)) << endl;
-      	  cout << "chivato5" << endl;
+      	  //cout << "chivato5" << endl;
+        	//insertar_visitado(candidato.get_indx());
+        	//borrar_no_visitado(candidato.get_indx());
         	cout << "-Numero de visitados despues: " << visitados.size() << endl;
-        	insertar_visitado(candidato.get_indx());
-        	borrar_no_visitado(candidato.get_indx());
+        	//insertar_visitado(candidato.get_indx());
+        	//borrar_no_visitado(candidato.get_indx());
         	cout << "Numero de no visitados: " << no_visitados.size() << endl;
         	//it = no_visitados.begin();
             //break;
+        	//it = no_visitados.begin();
+        	//cin.get();
          }
-         else
-            it++;
+         it++;
          //it++;
+
+         //cin.get();
       }
-      cin.get();
-   }
+      //cin.get();
+
+      }
+
 };
 /*
 vector<mdata> ruta_parcial :: ordenar_fila (int i) {
@@ -526,19 +537,19 @@ mdata ruta_parcial :: adyacente_cercano(int i) {
    int j = 0;
    while (j < mraw.getsize() && !fin_visitas()) {
       if (comprobar_visitado(mraw.get(i,j).get_indx()) && (mraw.get(i,j).alcanzable())) {
-    	 cout << "habba: " << mraw.get(i,j).get_indx() << endl;
+    	 //cout << "habba: " << mraw.get(i,j).get_indx() << endl;
          adyacentes.push_back(mraw.get(i,j));
       }
       j++;
    }
-   cout << "Adyacentes: " << endl;
+   //cout << "Adyacentes: " << endl;
    for (int j = 0; j < adyacentes.size(); j++) {
       cout << adyacentes[j].get_indx() <<  ", ";
    }
    cout << endl;
    if (adyacentes.size() > 0) {
       std :: sort (adyacentes.begin(), adyacentes.end());
-      cout << "mejor candidato es : " << (*adyacentes.begin()).get_indx() << ", para el punto: " << i <<  endl;
+      cout << "---- mejor candidato a visitar es : " << (*adyacentes.begin()).get_indx() << ", para el punto: " << i <<  endl;
       cout << endl;
       ret = (*adyacentes.begin());
    }
@@ -549,7 +560,8 @@ mdata ruta_parcial :: adyacente_cercano(int i) {
 int ruta_parcial :: insertar_pvehiculos (vector<tvehiculo> &v, int pvisitado, int pnuevo) {
    for (int i = 0; i < v.size(); i++) {
       if (v[i].insertar_npos(pvisitado,pnuevo)){
-         //insertar_visitado(pnuevo);
+         insertar_visitado(pnuevo);
+         borrar_no_visitado(pnuevo);
          return v[i].getid();
       }
    }
@@ -576,5 +588,19 @@ void ruta_parcial :: calcular_no_visitados() {
 
 void ruta_parcial :: borrar_no_visitado(int i) {
    no_visitados.remove(i);
+}
+
+void ruta_parcial :: imprimir_novisitados() {
+   cout << "No visitados numero: " << no_visitados.size() << endl;
+   for (list<int> :: iterator it = no_visitados.begin(); it != no_visitados.end();it++)
+	  cout << (*it) << ", ";
+   cout << endl;
+}
+
+void ruta_parcial :: imprimir_visitados() {
+   cout << "visitados: " << endl;
+   for (int i = 0; i < visitados.size(); i++)
+	   cout << visitados[i] << ", ";
+   cout << endl;
 }
 

@@ -55,19 +55,22 @@ int main() {
 	cout << endl << endl << endl;
 	//cin.get();
 	ruth.calcular_no_visitados();
-	vs[0].insertar_npos(8,57);
-	vs[0].impr_recorrido();
+	//vs[1].insertar_npos(39,57);
+	//vs[1].impr_recorrido();
 	//vehicle2.impr_recorrido();
 	//vehicle3.impr_recorrido();
+	//ruth.insertar_pvehiculos(vs,50,55);
+	for (int i = 0; i < vs.size(); i++)
+       vs[i].impr_recorrido();
 	//vector<int> vis = ruth.get_no_visitados();
 	//cout << "puntos no visitados: " << vis.size() << endl;
 	//for (int i = 0; i < vis.size(); i++)
    //    cout << vis[i] << ", ";
 	//cout << endl;
 	cin.get();
-    //ruth.completar_rutas(vs);
-	//for (int i = 0; i < vs.size(); i++)
-     //  vs[i].impr_recorrido();
+    ruth.completar_rutas(vs);
+	for (int i = 0; i < vs.size(); i++)
+       vs[i].impr_recorrido();
 	//vector<tvehiculo> dum;
 	//ruth.completar_rutas(dum);
 	//vehicle.insertar_npos(51,57);
@@ -84,5 +87,6 @@ int main() {
 	}
 	cout << endl;
 	*/
+	ruth.imprimir_novisitados();
 	return 0;
 }
