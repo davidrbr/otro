@@ -86,6 +86,7 @@ public:
    mdata adyacente_cercano(int i);
    int insertar_pvehiculos (vector<tvehiculo> &v, int pvisitado, int pnuevo);
    void calcular_no_visitados();
+   void borrar_no_visitado(int i);
 };
 
 

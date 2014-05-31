@@ -49,11 +49,14 @@ int main() {
 	//ruth.buscar(vehicle);
 	//ruth.buscar(vehicle2);
 	//ruth.buscar(vehicle3);
+	cout << endl << endl << endl;
 	for (int i = 0; i < vs.size(); i++)
        vs[i].impr_recorrido();
+	cout << endl << endl << endl;
 	//cin.get();
 	ruth.calcular_no_visitados();
-	//vehicle.impr_recorrido();
+	vs[0].insertar_npos(8,57);
+	vs[0].impr_recorrido();
 	//vehicle2.impr_recorrido();
 	//vehicle3.impr_recorrido();
 	//vector<int> vis = ruth.get_no_visitados();
@@ -61,7 +64,10 @@ int main() {
 	//for (int i = 0; i < vis.size(); i++)
    //    cout << vis[i] << ", ";
 	//cout << endl;
-//    ruth.completar_rutas(vs);
+	cin.get();
+    //ruth.completar_rutas(vs);
+	//for (int i = 0; i < vs.size(); i++)
+     //  vs[i].impr_recorrido();
 	//vector<tvehiculo> dum;
 	//ruth.completar_rutas(dum);
 	//vehicle.insertar_npos(51,57);
@@ -71,10 +77,12 @@ int main() {
 	//for (int i = 0; i < vs.size(); i++)
    //    vs[i].impr_recorrido();
 	cout << "numero de visitados: " << ruth.get_visitados().size() << endl;
+	/*
 	visit = ruth.get_visitados();
 	for (int i = 0; i < visit.size();i++) {
        cout << visit[i] << ", ";
 	}
 	cout << endl;
+	*/
 	return 0;
 }
