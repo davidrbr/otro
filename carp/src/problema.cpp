@@ -288,7 +288,8 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
 	   //cin.get();
 	   visitando.push_back(algo);
 	   //while (cont < mraw.getsize() && v.getcarga_actual()+ mraw.get_demandaij(ret.get_indx(), siguiente) <= v.getcarga_max() && !fin_visitas()) {
-	   while (cont < mraw.getsize()&& !fin_visitas() && ret.get_indx() != 55 && ret.get_indx() != 54 && ret.get_indx() != 53 && ret.get_indx() != 52 && ret.get_indx() != 51) {
+	   //while (cont < mraw.getsize()&& !fin_visitas() && ret.get_indx() != 55 && ret.get_indx() != 54 && ret.get_indx() != 53 && ret.get_indx() != 52 && ret.get_indx() != 51)
+	   while (cont < mraw.getsize()&& !fin_visitas() && (!adyacente_destino(ret.get_indx()))) {
 	   //while (cont < mraw.getsize() && v.getcarga_actual()+ listado[siguiente].  <= v.getcarga_max() && !fin_visitas()) {
 		  ret = candidatos(siguiente);
 		  cout << "----------->siguiente: " << ret.get_indx() << endl;
@@ -472,64 +473,29 @@ vector<int> ruta_parcial :: get_no_visitados() {
 
 
 void ruta_parcial :: completar_rutas(vector <tvehiculo> & vehiculos) {
-mdata candidato;
+  mdata candidato;
+  list<int> :: iterator it = no_visitados.begin();
+  while (!fin_visitas() && (!ultimo_punto())) {
+	  it = no_visitados.begin();
+	  while (it != no_visitados.end() && !fin_visitas()) {
+		 cout << "punto a visitar: " << (*it) << "size: " << no_visitados.size()  << endl;
+		 candidato = adyacente_cercano((*it)); // nov[i] es el punto para el cual se quiere buscar un candidato adyacente que si este visitado;
+		 if (candidato.get_indx() != -1){
+			cout << "candidato: " << candidato.get_indx() << endl;
+			cout << "-Numero de visitados antes: " << visitados.size() << endl;
+			cout << "insertado en vehiculo: " << insertar_pvehiculos(vehiculos,candidato.get_indx(),(*it)) << endl;
+		 }
+		 it++;
+		 //it++;
 
-	  //cout << "chivato1" << endl;
-	  //cout << "chivato2" << endl;
-	  //cout << "**tamanio no visitados: " << nov.size() << endl;
-      //cout << "chivato3" << endl;
-      list<int> :: iterator it = no_visitados.begin();
-      while (!fin_visitas()) {
-         it = no_visitados.begin();
-      while (it != no_visitados.end() && !fin_visitas()) {
-    	 cout << "punto a visitar: " << (*it) << "size: " << no_visitados.size()  << endl;
-         candidato = adyacente_cercano((*it)); // nov[i] es el punto para el cual se quiere buscar un candidato adyacente que si este visitado;
-         if (candidato.get_indx() != -1){
-        	cout << "candidato: " << candidato.get_indx() << endl;
-        	cout << "-Numero de visitados antes: " << visitados.size() << endl;
-            cout << "insertado en vehiculo: " << insertar_pvehiculos(vehiculos,candidato.get_indx(),(*it)) << endl;
-      	  //cout << "chivato5" << endl;
-        	//insertar_visitado(candidato.get_indx());
-        	//borrar_no_visitado(candidato.get_indx());
-        	cout << "-Numero de visitados despues: " << visitados.size() << endl;
-        	//insertar_visitado(candidato.get_indx());
-        	//borrar_no_visitado(candidato.get_indx());
-        	cout << "Numero de no visitados: " << no_visitados.size() << endl;
-        	//it = no_visitados.begin();
-            //break;
-        	//it = no_visitados.begin();
-        	//cin.get();
-         }
-         it++;
-         //it++;
+		 //cin.get();
+	  }
+	  //cin.get();
 
-         //cin.get();
-      }
-      //cin.get();
-
-      }
+  }
 
 };
-/*
-vector<mdata> ruta_parcial :: ordenar_fila (int i) {
-   vector <mdata> candidatos;
-   int j = 0;
-   while (j < mraw.getsize() && !fin_visitas()) {
-      if ((!comprobar_visitado(mraw.get(i,j).get_indx()) && mraw.get(i,j).get_valor() != 0) && (mraw.get(i,j).alcanzable()))
-         candidatos.push_back(mraw.get(i,j));
-      j++;
-   }
-   std :: sort(candidatos.begin(), candidatos.end());
-   cout << "candidatos: " << endl;
-   for (unsigned int i = 0; i < candidatos.size();i++)
-      cout << candidatos[i].get_indx() << ", ";
-   cout << endl;
-   if (candidatos.empty())
-   cout << "NO HAY CANDIDATOS!!" << endl;
-   return candidatos;
-};
 
-*/
 mdata ruta_parcial :: adyacente_cercano(int i) {
    vector <mdata> adyacentes;
    mdata ret;
@@ -537,7 +503,6 @@ mdata ruta_parcial :: adyacente_cercano(int i) {
    int j = 0;
    while (j < mraw.getsize() && !fin_visitas()) {
       if (comprobar_visitado(mraw.get(i,j).get_indx()) && (mraw.get(i,j).alcanzable())) {
-    	 //cout << "habba: " << mraw.get(i,j).get_indx() << endl;
          adyacentes.push_back(mraw.get(i,j));
       }
       j++;
@@ -576,7 +541,7 @@ void ruta_parcial :: calcular_no_visitados() {
             existe = true;
          }
       }
-      if (existe == false)
+      if ((existe == false) && (i != 0)) //aqui se deberia cambiar para que en vez de cero fuera
          no_visitados.push_back(i);
       existe = false;
    }
@@ -604,3 +569,22 @@ void ruta_parcial :: imprimir_visitados() {
    cout << endl;
 }
 
+bool ruta_parcial :: ultimo_punto() {
+   if (!fin_visitas() && (visitados.size() == mraw.getsize()-1)) {
+      cout << "QUEDA EL ULTIMO" << endl;
+      return true;
+   }
+   return false;
+}
+
+bool ruta_parcial :: adyacente_destino(int i) {
+   int j = 0;
+   if ((i < 0) || (i > mraw.getsize()))
+      return false;
+   while (j < mraw.getsize() && (mraw.get(i,j).alcanzable())) {
+	  if (mraw.get(i,j).get_indx() == 0)
+	     return true;
+	  j++;
+   }
+   return false;
+}

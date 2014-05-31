@@ -89,6 +89,8 @@ public:
    void borrar_no_visitado(int i);
    void imprimir_novisitados();
    void imprimir_visitados();
+   bool ultimo_punto(); //comprueba si solo queda un punto por visitar
+   bool adyacente_destino(int i); //comprueba si es adyacente al ultimo punt
 };
 
 
