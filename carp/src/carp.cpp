@@ -35,6 +35,15 @@ int main() {
 	vs.push_back(vehicle);
 	vs.push_back(vehicle2);
 	vs.push_back(vehicle3);
+
+	for (int i = 0; i < vs.size(); i++)
+	   ruth.insertar_visitado(vs[i].getOrigen());
+	vector<int> visit = ruth.get_visitados();
+	for (int i = 0; i < visit.size();i++) {
+       cout << visit[i] << ", ";
+	}
+	cout << endl;
+	//cin.get();
 	for (int i = 0; i < vs.size(); i++)
        ruth.buscar(vs[i]);
 	//ruth.buscar(vehicle);
@@ -42,23 +51,30 @@ int main() {
 	//ruth.buscar(vehicle3);
 	for (int i = 0; i < vs.size(); i++)
        vs[i].impr_recorrido();
-	cin.get();
+	//cin.get();
+	ruth.calcular_no_visitados();
 	//vehicle.impr_recorrido();
 	//vehicle2.impr_recorrido();
 	//vehicle3.impr_recorrido();
-	vector<int> vis = ruth.get_no_visitados();
-	cout << "puntos no visitados: " << vis.size() << endl;
-	for (int i = 0; i < vis.size(); i++)
-       cout << vis[i] << ", ";
-	cout << endl;
-    ruth.completar_rutas(vs);
+	//vector<int> vis = ruth.get_no_visitados();
+	//cout << "puntos no visitados: " << vis.size() << endl;
+	//for (int i = 0; i < vis.size(); i++)
+   //    cout << vis[i] << ", ";
+	//cout << endl;
+//    ruth.completar_rutas(vs);
 	//vector<tvehiculo> dum;
 	//ruth.completar_rutas(dum);
 	//vehicle.insertar_npos(51,57);
 	//vehicle.impr_recorrido();
 //	mdata dati = ruth.candidatos(1);
 	//cout << "candidato: " << dati.get_indx() << ", y es alcanzable: " << dati.alcanzable() << endl;
-	for (int i = 0; i < vs.size(); i++)
-       vs[i].impr_recorrido();
+	//for (int i = 0; i < vs.size(); i++)
+   //    vs[i].impr_recorrido();
+	cout << "numero de visitados: " << ruth.get_visitados().size() << endl;
+	visit = ruth.get_visitados();
+	for (int i = 0; i < visit.size();i++) {
+       cout << visit[i] << ", ";
+	}
+	cout << endl;
 	return 0;
 }

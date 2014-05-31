@@ -66,6 +66,7 @@ private:
    mdistancia mord; //matriz de distancias ordenada
    vector<int> visitados;
    //vector<int> no_visitados;
+   list<int> no_visitados;
    datos * data;
    //int origen;
 public:
@@ -79,11 +80,12 @@ public:
    bool comprobar_visitado (int i);
    bool fin_visitas ();
    float getdistanciaij (int i, int j);
-   vector <int> get_visitados();
+   vector <int> get_visitados(); //
    vector<int> get_no_visitados();
    void completar_rutas(vector <tvehiculo> & vehiculos);
    mdata adyacente_cercano(int i);
    int insertar_pvehiculos (vector<tvehiculo> &v, int pvisitado, int pnuevo);
+   void calcular_no_visitados();
 };
 
 

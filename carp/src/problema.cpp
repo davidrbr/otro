@@ -189,8 +189,13 @@ vector<mdata> ruta_parcial :: ordenar_fila (int i) {
    vector <mdata> candidatos;
    int j = 0;
    while (j < mraw.getsize() && !fin_visitas()) {
-      if ((!comprobar_visitado(mraw.get(i,j).get_indx()) && mraw.get(i,j).get_valor() != 0) && (mraw.get(i,j).alcanzable()))
+      if ((!comprobar_visitado(mraw.get(i,j).get_indx()) && mraw.get(i,j).get_valor() != 0) && (mraw.get(i,j).alcanzable())) {
          candidatos.push_back(mraw.get(i,j));
+         if ((mraw.get(i,j).get_indx()) == 4) {
+            cout << "De aqui sale el 4: " << endl;
+            cin.get();
+         }
+      }
       j++;
    }
    std :: sort(candidatos.begin(), candidatos.end());
@@ -240,6 +245,10 @@ mdata ruta_parcial :: candidatos (int i) { // dado un punto buscamos los 3 mas c
    }
    if (candidatos[indice].alcanzable())
       insertar_visitado(candidatos[indice].get_indx());
+   if (candidatos[indice].get_indx() == 4) {
+      cout << "CUATRO" << endl,
+      cin.get();
+   }
    return candidatos[indice];
 };
 bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
@@ -249,7 +258,7 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
 	   int cont = 0;
 	   int siguiente = v.getOrigen();
 	   //cout << "origen: " <<
-	   insertar_visitado(siguiente);
+	   //insertar_visitado(siguiente);
 	   //v.insertar(siguiente);
 	   //float coste = 0.0;
 	   mdata ret;
@@ -421,6 +430,7 @@ vector<int> ruta_parcial :: get_no_visitados() {
    vector <int> ret;
   // cout << "chivatin" << endl;
    //std :: sort (aux.begin(), aux.end());
+   /*
    for (int i = 0; i < mraw.getsize(); i++) {
       bool found = false;
       //cout << "indice: " << i << endl;
@@ -436,17 +446,8 @@ vector<int> ruta_parcial :: get_no_visitados() {
 	  if (found == false)
 	     ret.push_back(i);
    }
-   /*
-      //ret.push_back(i);
-   cin.get();
-   for (int i = 0; i < mraw.getsize(); i++) {
-	   for (int j = 0; j < aux.size(); j++) {
-          if (ret[i] == aux[j]){
-             ret.erase(ret.begin()+i);
-             break;
-          }
-	   }
-   }
+
+   return ret;
    */
    return ret;
 }
@@ -535,5 +536,23 @@ int ruta_parcial :: insertar_pvehiculos (vector<tvehiculo> &v, int pvisitado, in
       }
    }
    return -1;
+}
+
+void ruta_parcial :: calcular_no_visitados() {
+   bool existe = false;
+   for (int i = 0; i < mraw.getsize();i++) {
+      for (int j = 0; j < visitados.size();j++) {
+         if (i == visitados[j]) {
+            existe = true;
+         }
+      }
+      if (existe == false)
+         no_visitados.push_back(i);
+      existe = false;
+   }
+   cout << "No visitados numero: " << no_visitados.size() << endl;
+   for (list<int> :: iterator it = no_visitados.begin(); it != no_visitados.end();it++)
+      cout << (*it) << ", ";
+   cout << endl;
 }
 
