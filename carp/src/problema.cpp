@@ -36,16 +36,12 @@ void tvehiculo :: insertar (int i) {
 };
 
 void tvehiculo :: impr_recorrido () {
-   ofstream file;
-   file.open("vehiculo.txt");
+   cout << "Coste total vehiculo: " << get_coste() << ", carga: " << getcarga_actual() << endl;
    cout << "Recorrido del vehiculo "<< id << ": " << endl;
    for (vector<int> :: iterator it = visitados.begin(); it != visitados.end(); it++) {
       cout << "," << (*it);
-      file << "," << (*it);
    }
    cout << endl << endl;
-   file << endl << endl;
-   file.close();
 
 };
 
@@ -84,8 +80,8 @@ void tvehiculo :: sumar_coste (float cost) {
 };
 
 float tvehiculo :: get_coste () {
-   if (!enuso())
-      return 0.0;
+   //if (!enuso())
+     // return 0.0;
    return coste;
 };
 
@@ -261,8 +257,8 @@ mdata ruta_parcial :: candidatos (int i) { // dado un punto buscamos los 3 mas c
       dummy.set_indx(-1);
       return dummy;
    }
-   if (candidatos[indice].alcanzable())
-      insertar_visitado(candidatos[indice].get_indx());
+//   if (candidatos[indice].alcanzable())
+//      insertar_visitado(candidatos[indice].get_indx());
    if (candidatos[indice].get_indx() == 4) {
       cout << "CUATRO" << endl,
       cin.get();
@@ -305,10 +301,14 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
           cout << endl;
           if (ret.alcanzable()) {
 
-		     v.sumar_coste(ret.get_valor());
+		     //v.sumar_coste(ret.get_valor());
+		     v.sumar_coste(mraw.get_distancia(ret.get_indx(), siguiente));
 		  //cout << "ret: " << ret.getdistancia() << ", " << "getij: " << mraw.get_distancia(ret.getid(), siguiente) << " i: " << siguiente << ", j: " << ret.getid() << endl;
 		  //cin.get();
-		     v.sumar_carga(mraw.get_demandaij(ret.get_indx(), siguiente));
+		     if (!comprobar_visitado(ret.get_indx())){
+		        v.sumar_carga(mraw.get_demandaij(ret.get_indx(), siguiente));
+			    insertar_visitado(ret.get_indx());
+		     }
 		     siguiente = ret.get_indx();
 		     v.insertar(siguiente);
 		     cont++;
@@ -525,6 +525,10 @@ mdata ruta_parcial :: adyacente_cercano(int i) {
 int ruta_parcial :: insertar_pvehiculos (vector<tvehiculo> &v, int pvisitado, int pnuevo) {
    for (int i = 0; i < v.size(); i++) {
       if (v[i].insertar_npos(pvisitado,pnuevo)){
+    	 cout << "demanda:" << mraw.get_demandaij(pvisitado,pnuevo) << endl;
+    	 if (!comprobar_visitado(pnuevo))
+		    v[i].sumar_carga(mraw.get_demandaij(pvisitado,pnuevo));
+	     v[i].sumar_coste(mraw.get_distancia(pvisitado,pnuevo));
          insertar_visitado(pnuevo);
          borrar_no_visitado(pnuevo);
          return v[i].getid();
@@ -594,6 +598,8 @@ bool ruta_parcial :: terminar_rutas(vector <tvehiculo> & vehiculos) {
       int ultimo = vehiculos[i].get_visitado(vehiculos[i].visitados_size()-1);
       if (adyacente_destino(ultimo)) {
          vehiculos[i].insertar(0);
+		 vehiculos[i].sumar_carga(mraw.get_demandaij(ultimo,0));
+	     vehiculos[i].sumar_coste(mraw.get_distancia(ultimo,0));
       }
    }
 }
