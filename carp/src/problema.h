@@ -91,9 +91,19 @@ public:
    void imprimir_visitados();
    bool ultimo_punto(); //comprueba si solo queda un punto por visitar
    bool adyacente_destino(int i); //comprueba si es adyacente al ultimo punt
-   bool terminar_rutas(vector <tvehiculo> & vehiculos);
+   void terminar_rutas(vector <tvehiculo> & vehiculos);
+   int get_no_visitados_size(); //devuelve el numero de puntos no visitados
 };
 
+class resolver {
+private:
+   vector<tvehiculo> vs; //listado de los vehiculos que se van a usar
+   ruta_parcial * rut;
+public:
+   resolver();
+   resolver(int nvehiculos, mdistancia & mt, datos * dt);
+   int ejecutar();
 
+};
 
 #endif /* PROBLEMA_H_ */

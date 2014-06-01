@@ -120,14 +120,14 @@ void tvehiculo :: set_visitado(int i, int valor) {
 bool tvehiculo :: insertar_npos(int i, int j) {
    vector<int> copia;
    bool find = false;
-   for (int k = 0; k < visitados.size(); k++) {
+   for (unsigned int k = 0; k < visitados.size(); k++) {
       if (visitados[k] == i)
          find = true;
       if (visitados[k] == j) //si ya existe no lo va a insertar
          return false;
    }
    if (find == true) { //si se encuentra el punto:
-      int k = 0;
+      unsigned int k = 0;
       while (k < visitados.size()) {
          if (visitados[k] != i)
             copia.push_back(visitados[k]);
@@ -184,6 +184,7 @@ ruta_parcial :: ruta_parcial (mdistancia &mat,datos * dat) {
 }
 
 ruta_parcial :: ruta_parcial (string nombre) {
+   data = NULL;
    //mdistancia aux(nombre.c_str());
   // mraw = aux;
    //mord = aux;
@@ -295,7 +296,7 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
 		  if (ret.get_indx() != -1)
 		     visitando.push_back(ret);
 		  cout << "tamanio visitando: " << visitando.size() << endl;
-          for (int i = 0; i < visitando.size(); i++) {
+          for (unsigned int i = 0; i < visitando.size(); i++) {
              cout << visitando[i].get_indx() << ", ";
           }
           cout << endl;
@@ -343,7 +344,7 @@ bool ruta_parcial :: buscar (tvehiculo &v) { //ruta parcial
           }
           cout << "Puntos ya visitados: " << visitados.size() << endl;
           //std :: sort (visitados.begin(),visitados.end());
-          for (int i = 0; i < visitados.size(); i++) {
+          for (unsigned int i = 0; i < visitados.size(); i++) {
         	  cout << visitados[i] << ". ";
           }
           cout << endl;
@@ -508,7 +509,7 @@ mdata ruta_parcial :: adyacente_cercano(int i) {
       j++;
    }
    //cout << "Adyacentes: " << endl;
-   for (int j = 0; j < adyacentes.size(); j++) {
+   for (unsigned int j = 0; j < adyacentes.size(); j++) {
       cout << adyacentes[j].get_indx() <<  ", ";
    }
    cout << endl;
@@ -523,7 +524,7 @@ mdata ruta_parcial :: adyacente_cercano(int i) {
 }
 
 int ruta_parcial :: insertar_pvehiculos (vector<tvehiculo> &v, int pvisitado, int pnuevo) {
-   for (int i = 0; i < v.size(); i++) {
+   for (unsigned int i = 0; i < v.size(); i++) {
       if (v[i].insertar_npos(pvisitado,pnuevo)){
     	 cout << "demanda:" << mraw.get_demandaij(pvisitado,pnuevo) << endl;
     	 if (!comprobar_visitado(pnuevo))
@@ -540,7 +541,7 @@ int ruta_parcial :: insertar_pvehiculos (vector<tvehiculo> &v, int pvisitado, in
 void ruta_parcial :: calcular_no_visitados() {
    bool existe = false;
    for (int i = 0; i < mraw.getsize();i++) {
-      for (int j = 0; j < visitados.size();j++) {
+      for (unsigned int j = 0; j < visitados.size();j++) {
          if (i == visitados[j]) {
             existe = true;
          }
@@ -568,13 +569,13 @@ void ruta_parcial :: imprimir_novisitados() {
 
 void ruta_parcial :: imprimir_visitados() {
    cout << "visitados: " << endl;
-   for (int i = 0; i < visitados.size(); i++)
+   for (unsigned int i = 0; i < visitados.size(); i++)
 	   cout << visitados[i] << ", ";
    cout << endl;
 }
 
 bool ruta_parcial :: ultimo_punto() {
-   if (!fin_visitas() && (visitados.size() == mraw.getsize()-1)) {
+   if (!fin_visitas() && ((unsigned int)visitados.size() == (unsigned int)mraw.getsize()-1)) {
       cout << "QUEDA EL ULTIMO" << endl;
       return true;
    }
@@ -593,8 +594,8 @@ bool ruta_parcial :: adyacente_destino(int i) {
    return false;
 }
 
-bool ruta_parcial :: terminar_rutas(vector <tvehiculo> & vehiculos) {
-   for (int i = 0; i < vehiculos.size();i++) {
+void ruta_parcial :: terminar_rutas(vector <tvehiculo> & vehiculos) {
+   for (unsigned int i = 0; i < vehiculos.size();i++) {
       int ultimo = vehiculos[i].get_visitado(vehiculos[i].visitados_size()-1);
       if (adyacente_destino(ultimo)) {
          vehiculos[i].insertar(0);
@@ -602,4 +603,45 @@ bool ruta_parcial :: terminar_rutas(vector <tvehiculo> & vehiculos) {
 	     vehiculos[i].sumar_coste(mraw.get_distancia(ultimo,0));
       }
    }
+}
+
+int ruta_parcial :: get_no_visitados_size() { //devuelve el numero de puntos no visitados
+   return no_visitados.size();
+}
+resolver :: resolver() {
+   rut = NULL;
+}
+resolver :: resolver(int nvehiculos, mdistancia & mt, datos * dt) {
+/*
+   for (unsigned int i = 0; i < nvehiculos;i++) {
+      tvehiculo v(i,500,i);
+   }
+*/
+   tvehiculo vehicle(1,500,1);
+   tvehiculo vehicle2(2,500,8);
+   tvehiculo vehicle3(3,500,4);
+   vs.push_back(vehicle);
+   vs.push_back(vehicle2);
+   vs.push_back(vehicle3);
+   rut = new ruta_parcial(mt,dt);
+   for (unsigned int i = 0; i < vs.size(); i++)
+	   rut->insertar_visitado(vs[i].getOrigen());
+}
+int resolver ::  ejecutar() {
+   int ret;
+   for (unsigned int i = 0; i < vs.size(); i++)
+      rut->buscar(vs[i]);
+   cout << endl << endl << endl;
+   for (unsigned int i = 0; i < vs.size(); i++)
+      vs[i].impr_recorrido();
+   cout << endl << endl << endl;
+   rut->calcular_no_visitados();
+   ret = rut->get_no_visitados_size();
+   rut->completar_rutas(vs);
+   for (unsigned int i = 0; i < vs.size(); i++)
+      vs[i].impr_recorrido();
+   rut->terminar_rutas(vs);
+   for (unsigned int i = 0; i < vs.size(); i++)
+      vs[i].impr_recorrido();
+   return ret;
 }
