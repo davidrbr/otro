@@ -103,6 +103,7 @@ public:
    resolver();
    resolver(int nvehiculos, mdistancia & mt, datos * dt);
    int ejecutar();
+   void imprimir_rutas();
 
 };
 

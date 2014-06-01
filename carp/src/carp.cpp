@@ -28,14 +28,25 @@ int main() {
 
 	resolver * res;
 	res = new resolver(3,mat,dat);
-	int num = -1;
+	int num = 9999;
 	num = res->ejecutar();
+	resolver * menor;
+	menor = NULL;
 	cout << "NUMERO DE NOVISITADOS: " << num << endl;
-	cin.get();
-	resolver * res2;
-    res2 = new resolver(3,mat,dat);
-	num = res2->ejecutar();
-	cout << "NUMERO DE NOVISITADOS: " << num << endl;
-
+	int n_actual = -1;
+    for (int i = 0; i < 100; i++) {
+    	res = new resolver(3,mat,dat);
+    	n_actual = res->ejecutar();
+    	if (n_actual < num) {
+    	   num = n_actual;
+    	   menor = res;
+    	}
+    	else
+    	   delete res;
+    }
+    cout << "fin" << endl;
+    cout << "Num: " << num << endl;
+    menor->imprimir_rutas();
+	delete menor;
 	return 0;
 }

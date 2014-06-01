@@ -631,17 +631,16 @@ int resolver ::  ejecutar() {
    int ret;
    for (unsigned int i = 0; i < vs.size(); i++)
       rut->buscar(vs[i]);
-   cout << endl << endl << endl;
-   for (unsigned int i = 0; i < vs.size(); i++)
-      vs[i].impr_recorrido();
-   cout << endl << endl << endl;
    rut->calcular_no_visitados();
    ret = rut->get_no_visitados_size();
    rut->completar_rutas(vs);
-   for (unsigned int i = 0; i < vs.size(); i++)
-      vs[i].impr_recorrido();
    rut->terminar_rutas(vs);
-   for (unsigned int i = 0; i < vs.size(); i++)
-      vs[i].impr_recorrido();
    return ret;
+}
+
+void resolver :: imprimir_rutas() {
+   cout << endl << endl << endl;
+   for (unsigned int i = 0; i < vs.size(); i++)
+	  vs[i].impr_recorrido();
+   cout << endl << endl << endl;
 }
