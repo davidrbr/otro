@@ -588,3 +588,12 @@ bool ruta_parcial :: adyacente_destino(int i) {
    }
    return false;
 }
+
+bool ruta_parcial :: terminar_rutas(vector <tvehiculo> & vehiculos) {
+   for (int i = 0; i < vehiculos.size();i++) {
+      int ultimo = vehiculos[i].get_visitado(vehiculos[i].visitados_size()-1);
+      if (adyacente_destino(ultimo)) {
+         vehiculos[i].insertar(0);
+      }
+   }
+}

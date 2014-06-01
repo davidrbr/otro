@@ -88,5 +88,8 @@ int main() {
 	cout << endl;
 	*/
 	ruth.imprimir_novisitados();
+	ruth.terminar_rutas(vs);
+	for (int i = 0; i < vs.size(); i++)
+       vs[i].impr_recorrido();
 	return 0;
 }
